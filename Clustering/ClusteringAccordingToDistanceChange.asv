@@ -1,0 +1,84 @@
+function ClusteringAccordingToDistanceChange(data_file)
+% ClusteringAccordingToDistanceChange is the main script to group dyads
+% into clusters based on the change in distance between them throughout the
+% session
+%
+%% Syntax
+% ClusteringAccordingToDistanceChange(data_file)
+%
+%% Description
+% ClusteringAccordingToDistanceChange gets a data file with the changes
+% between partners, calculates the similarity between all dyads according
+% to the change in distance between the partners and performs density-peak
+% clustering to cluster the dyads to groups
+%
+% Required Input.
+% data_file: data_file with the changes in distance between the mom and
+% the baby
+load(data_file)
+
+% calculates the percentage of distance change to use for similarity (how
+% much the mom and baby got closer and further and in which condition).
+% Data file should already include all the conditions according to the
+% order: distance closter-baby move | distance closer-mom move | distance
+% closer both move| distance further-baby move | distance further-mom move | distance
+% further both move| 
+subject_time_patterns = [mom_baby_dist_by_stats_segmants_closer./(sum(mom_baby_dist_by_stats_segmants_closer,2)) ...
+                         mom_baby_dist_by_stats_segmants_further./(sum(mom_baby_dist_by_stats_segmants_further,2))];
+
+clear mom_baby_dist_by_stats_getting_closer mom_baby_dist_by_stats_getting_further mom_baby_dist_by_stats_segmants_closer mom_baby_dist_by_stats_segmants_further
+
+% Cluster subject based on similarity between them
+[dist_cl]=cluster_subjects(pdist(subject_time_patterns),3);
+
+
+group1_time_patterns=subject_time_patterns(dist_cl==1,:);
+group2_time_patterns=subject_time_patterns(dist_cl==2,:);
+close all;
+
+mean_group1_time_patterns=mean(group1_time_patterns);
+mean_group2_time_patterns=mean(group2_time_patterns);
+std_group1_time_patterns=std(group1_time_patterns);
+std_group2_time_patterns=std(group2_time_patterns);
+
+mean_group1_time_patterns=[mean_group1_time_patterns(:,1) mean_group1_time_patterns(:,2) mean_group1_time_patterns(:,3);
+                           mean_group1_time_patterns(:,4) mean_group1_time_patterns(:,5) mean_group1_time_patterns(:,6)];
+
+mean_group2_time_patterns=[mean_group2_time_patterns(:,1) mean_group2_time_patterns(:,2) mean_group2_time_patterns(:,3); ...
+                           mean_group2_time_patterns(:,4) mean_group2_time_patterns(:,5) mean_group2_time_patterns(:,6)];
+
+std_group1_time_patterns=[std_group1_time_patterns(:,1) std_group1_time_patterns(:,2) std_group1_time_patterns(:,3); ...
+                          std_group1_time_patterns(:,4) std_group1_time_patterns(:,5) std_group1_time_patterns(:,6)];
+
+                      
+std_group2_time_patterns=[std_group2_time_patterns(:,1) std_group2_time_patterns(:,2) std_group2_time_patterns(:,3); ...
+                          std_group2_time_patterns(:,4) std_group2_time_patterns(:,5) std_group2_time_patterns(:,6)];
+
+
+bar([mean_group1_time_patterns; mean_group2_time_patterns]);
+legend({'closer';'further'})
+set(gca,'FontSize',5)
+ylabel('Percent of movement time');
+xticklabels({'dist group1 - both','dist group1 - mom only','dist group1 - baby only', ...
+             'dist group2 - both','dist group2 - mom only','dist group2 - baby only'});
+% hold on
+% errorbar([reshape(mean_group1_time_patterns,size(mean_group1_time_patterns,1)*size(mean_group1_time_patterns,2),1) ...
+%           ;reshape(mean_group2_time_patterns,size(mean_group2_time_patterns,1)*size(mean_group2_time_patterns,2),1)], ...
+%          [reshape(std_group1_time_patterns,size(std_group1_time_patterns,1)*size(std_group1_time_patterns,2),1) ...
+%           ;reshape(std_group2_time_patterns,size(std_group2_time_patterns,1)*size(std_group2_time_patterns,2),1)], ...
+%           'k');
+
+
+print('-dpng', fullfile('NewResults','GroupDistanceClustering','distnace_clusters.png'), '-r300');
+
+figure;
+low_cl = dist_cl(cl==1);
+med_cl = dist_cl(cl==2);
+high_cl = dist_cl(cl==3);
+bar([length(low_cl(low_cl==1))/length(low_cl) 1-length(low_cl(low_cl==1))/length(low_cl); ...
+    length(med_cl(med_cl==1))/length(med_cl) 1-length(med_cl(med_cl==1))/length(med_cl); ...
+    length(high_cl(high_cl==1))/length(high_cl) 1-length(high_cl(high_cl==1))/length(high_cl)]);
+ylabel('Percent of the group');
+legend({'dist-group1';'dist-group2'})
+xticklabels({'low group','medium group','high group'});
+print('-dpng', fullfile('NewResults','GroupDistanceClustering','distance_clusters_in_movement_clusters.png'), '-r300');
