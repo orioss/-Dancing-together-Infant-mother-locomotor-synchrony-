@@ -1,11 +1,11 @@
-function [clusters_array]=cluster_subjects(mdist,density_cutoff)
-% cluster_subjects is an implementation of density-peak clustering. 
+function [clusters_array]=ClusterSubjectsPeakDensity(mdist,density_cutoff)
+% ClusterSubjectsPeakDensity is an implementation of density-peak clustering. 
 %
 %% Syntax
-% [clusters_array]=cluster_subjects(mdist_square,percent)
+% [clusters_array]=ClusterSubjectsPeakDensity(mdist_square,percent)
 %
 %% Description
-% cluster_subjects gets a similiarity between each pair of samples and a cutoff distance 
+% ClusterSubjectsPeakDensity gets a similiarity between each pair of samples and a cutoff distance 
 % and returns an array with the cluster number for each dyad. The
 % clustering is based on calculating the density between all samples
 % (according to the similarity matrix) and the distance between each

@@ -32,4 +32,4 @@ subject_time_patterns = [mom_baby_dist_by_stats_segmants_closer./(sum(mom_baby_d
 clear mom_baby_dist_by_stats_getting_closer mom_baby_dist_by_stats_getting_further mom_baby_dist_by_stats_segmants_closer mom_baby_dist_by_stats_segmants_further
 
 % Cluster subject based on similarity between them
-[dist_cl]=cluster_subjects(pdist(subject_time_patterns),3);
+[dist_cl]=ClusterSubjectsPeakDensity(pdist(subject_time_patterns),3);
