@@ -1,17 +1,16 @@
 clear;clc;
+% input: data_dir, movement_times, resampled_data, mom_baby_stats
 % Cases:
 % 1 - both move
 % 2 - mom move, baby don't
 % 3 - baby move, mom don't
 % 4 - both don't move
-moms_stats  = csvimport('NewData\MomStats.csv');
-mom_baby_data = csvimport('NewData\ResampledData.csv');
-load('NewResults\mom_baby_movement_times_only_only_elevation.mat');
-%load('NewResults\mom_baby_movement_times_only.mat','mom_baby_movements');
+moms_stats  = csvimport(mom_baby_stats);
+mom_baby_data = csvimport(resampled_data);
+load(movement_times);
+
 moms_data = cell2mat(moms_stats(2:end,2:3));
 mom_baby_num_data = cell2mat(mom_baby_data(2:end,2:end));
-load('NewResults\clustered_moms.mat');
-load('NewResults\subjectsNums.mat');
 colors = [251,128,114; 204,235,197; 128,177,211];
 colors = colors./255
 mom_baby_dist_by_stats_total_distance = zeros(size(moms_data,1),3);
@@ -215,5 +214,5 @@ for md=1:size(moms_data,1)
                                 length(mom_baby_moving_case_no_stationary(mom_baby_moving_case_no_stationary==3))/length(mom_baby_moving_case_no_stationary)*100];
 end
 
-save(fullfile('C:\Users\orios\Desktop\University\Post\StudiesCurrent\MomBaby\Analysis','NewResults','mom_baby_dist_changes_stats_only_elevation.mat'),'mom_baby_dist_by_stats_total_distance', ...
+save(fullfile(data_dir,'mom_baby_dist_changes_stats_only_elevation.mat'),'mom_baby_dist_by_stats_total_distance', ...
     'mom_baby_dist_by_stats_segmants','mom_baby_dist_by_stats_getting_closer','mom_baby_dist_by_stats_getting_further','mom_baby_dist_by_stats_segmants_further','mom_baby_dist_by_stats_segmants_closer','dists','all_subjects_moving_case');
