@@ -43,16 +43,16 @@ for sub=1:size(baby_move_both,1)
         if (~isempty(time_data))
             
             % x causality mom->baby
-            [F_x_baby,c_v_x_baby] = granger_cause(baby_data(:,1),mom_data(:,1),0.05,max_time_lags);
+            [F_x_baby,c_v_x_baby] = GrangerCausality(baby_data(:,1),mom_data(:,1),0.05,max_time_lags);
 
             % y causality mom->baby
-            [F_y_baby,c_v_y_baby] = granger_cause(baby_data(:,2),mom_data(:,2),0.05,max_time_lags);
+            [F_y_baby,c_v_y_baby] = GrangerCausality(baby_data(:,2),mom_data(:,2),0.05,max_time_lags);
 
             % x causality baby->mom
-            [F_x_mom,c_v_x_mom] = granger_cause(mom_data(:,1),baby_data(:,1),0.05,max_time_lags);
+            [F_x_mom,c_v_x_mom] = GrangerCausality(mom_data(:,1),baby_data(:,1),0.05,max_time_lags);
 
             % y causality baby->mom
-            [F_y_mom,c_v_y_mom] = granger_cause(mom_data(:,2),baby_data(:,2),0.05,max_time_lags);
+            [F_y_mom,c_v_y_mom] = GrangerCausality(mom_data(:,2),baby_data(:,2),0.05,max_time_lags);
 
             % Mom led baby to move
             if ((F_x_baby>c_v_x_baby | F_y_baby>c_v_y_baby) & ~(F_x_mom>c_v_x_mom | F_y_mom>c_v_y_mom))
