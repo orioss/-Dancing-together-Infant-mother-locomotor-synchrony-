@@ -10,8 +10,8 @@ function [unnorm_dist,accum_distance,normal_fact,optimal_path,signal1_warped,sig
 % measure and the normalization factor and the warped signals. 
 %
 % Required Input.
-% signal1: the vector you are testing against
-% signal2: the vector you are testing
+% signal1: the vector you are testing against (partner 1 path)
+% signal2: the vector you are testing (partner 2 path)
 % print_flag: plot flag: 1 (yes), 0(no)
 %
 % Output. 

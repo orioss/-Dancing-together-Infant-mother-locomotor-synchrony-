@@ -12,8 +12,7 @@ function CalcMomBabyDistanceTimesDistribution(figures_dir, distances_file_floor,
 %
 % Required Input.
 % figures_dir: directory for saving the figures
-% distances_file_floor: MAT file that includes the mom-baby distance
-% at each moment on floor
+% distances_file_floor: MAT file that includes the mom-baby distance at each moment on floor
 % distances_file_elevation: MAT file that includes the mom-baby
 % distrance at each moment on elevation 
 %

@@ -1,10 +1,10 @@
-function [dist_cl]=ClusteringAccordingToDistanceChange(data_file)
+function [dist_cl]=ClusteringAccordingToDistanceChange(mom_baby_distance_file)
 % ClusteringAccordingToDistanceChange is the main script to group dyads
 % into clusters based on the change in distance between them throughout the
 % session
 %
 %% Syntax
-% ClusteringAccordingToDistanceChange(data_file)
+% ClusteringAccordingToDistanceChange(mom_baby_distance_file)
 %
 %% Description
 % ClusteringAccordingToDistanceChange gets a data file with the changes
@@ -13,12 +13,12 @@ function [dist_cl]=ClusteringAccordingToDistanceChange(data_file)
 % clustering to cluster the dyads to groups
 %
 % Required Input.
-% data_file: data_file with the changes in distance between the mom and
+% mom_baby_distance_file: data_file with the changes in distance between the mom and
 % the baby.
 %
 % Output.
 % dist_cl: array with all the clusters according to the change in distance
-load(data_file)
+load(mom_baby_distance_file)
 
 % calculates the percentage of distance change to use for similarity (how
 % much the mom and baby got closer and further and in which condition).

@@ -1,9 +1,9 @@
-function CalcBabyMomMovementTrajectories(data_dir, movement_times_file, resampled_data_file, mom_baby_stats_file)
+function CalcBabyMomMovementTrajectories(data_dir, mom_baby_movement_times, resampled_data_csv_file, dyad_stats_csv_file)
 % CalcBabyMomMovement calculates the mom and the baby movement trajectory
 % and movement times
 %
 %% Syntax
-% CalcBabyMomMovementTrajectories(data_dir, movement_times_file, resampled_data_file, mom_baby_stats_file)
+% CalcBabyMomMovementTrajectories(data_dir, mom_baby_movement_times, resampled_data_csv_file, dyad_stats_csv_file)
 %
 %% Description
 % CalcBabyMomMovementTrajectories gets mom and baby movement times, resampled data to
@@ -13,14 +13,13 @@ function CalcBabyMomMovementTrajectories(data_dir, movement_times_file, resample
 %
 % Required Input.
 % data_dir: directory to save trajectory files
-% movement_times_file: MAT file that includes mom and baby movement time from datavyu
-% resampled_data_file: MAT file that includes data resmpling for mom and baby location in the room every 100ms
-% mom_baby_stats_file: MAT file that includes 
+% mom_baby_movement_times: a MATLAB structure with mom and baby moveemnt times
+% resampled_data_csv_file: MAT file that includes data resmpling for mom and baby location in the room every 100ms
+% dyad_stats_csv_file: MAT file that includes the dyad movement statistics at the session level
 
 % load all data files
-moms_stats  = csvimport(mom_baby_stats_file);
-mom_baby_data = csvimport(resampled_data_file);
-load(movement_times_file);
+moms_stats  = csvimport(dyad_stats_csv_file);
+mom_baby_data = csvimport(resampled_data_csv_file);
 moms_data = cell2mat(moms_stats(2:end,2:3));
 mom_baby_num_data = cell2mat(mom_baby_data(2:end,2:end));
 
@@ -35,7 +34,6 @@ mom_baby_dist_by_stats_segmants_further = zeros(size(moms_data,1),3);
 mom_baby_dist_by_stats_segmants_closer = zeros(size(moms_data,1),3);
 mom_baby_dist_by_stats_getting_closer = zeros(size(moms_data,1),3);
 mom_baby_dist_by_stats_getting_further = zeros(size(moms_data,1),3);
-mom_baby_dist_changes = zeros(size(moms_data,1),4); % both | only baby | only mom | all besides stay still
 from_stationary_result=zeros(size(moms_data,1),2);
 from_stationary_result_30=zeros(size(moms_data,1),2);
 from_stationary_result_50=zeros(size(moms_data,1),2);
@@ -71,8 +69,8 @@ for md=1:size(moms_data,1)
        mom_baby_dist(mbi) = calcdist([baby_sub_data(mbi,:); mom_sub_data(mbi,:)]);
    end
 
-    baby_movement = mom_baby_movements{md,1};
-    mom_movement = mom_baby_movements{md,2};
+    baby_movement = mom_baby_movement_times{md,1};
+    mom_movement = mom_baby_movement_times{md,2};
     mom_baby_moving_case = [];
     
     % Devides the movement times moment to moment to 4 cases:
